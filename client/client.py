@@ -73,7 +73,7 @@ def get_presence():
 
 
 if __name__ == '__main__':
-    addr = ('', 8888)
+    addr = ('', 8887)
     s = get_socket(addr)
     name = 'Pit'
     print(f'Тебя зовут {name}')
