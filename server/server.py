@@ -3,6 +3,11 @@ import socket
 import pickle
 
 
+class ServerVerifier(type):
+    def __init__(self, data):
+        self._data = data
+
+
 class ChatServer():
     def __init__(self, addr):
         self.socket = socket.socket()
@@ -21,7 +26,7 @@ class ChatServer():
                     data['flag'] = 'сообщение из группы'
                     cl.send(pickle.dumps(data))
             else:
-                self.logins[data['to']].send(pickle.dumps(data))
+                self.logins[data['to']].send(pickle.dumps(data)) #todo - client can be absent in clients
         elif data['action'] == 'presence':
             self.logins[data['user']] = client
             print(self.logins.keys())
@@ -50,7 +55,7 @@ class ChatServer():
                 responses[client] = self.handle_data(pickle.loads(data), client)
         return responses
 
-    def send(self, requests, w, clients):
+    def send(self, requests, w):
         for sock in requests:
             for client in w:
                 try:
@@ -78,7 +83,6 @@ class ChatServer():
                 requests = self.read(r)
                 # if requests:
                 #     send(requests, w, clients)
-
 
 
 if __name__ == '__main__':
